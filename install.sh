@@ -149,13 +149,12 @@ case "\${1:-start}" in
 esac
 CLIP
 
-if [ -d "/usr/local/bin" ]; then
-    mv /tmp/clipstash_cli "$CLI_PATH" 2>/dev/null && chmod +x "$CLI_PATH" 2>/dev/null || {
-        sudo mv /tmp/clipstash_cli "$CLI_PATH" && sudo chmod +x "$CLI_PATH"
-    }
+if [ -d "/usr/local/bin" ] && mv /tmp/clipstash_cli "$CLI_PATH" 2>/dev/null && chmod +x "$CLI_PATH" 2>/dev/null; then
     echo "  ✓ CLI ready — type 'clipstash' to manage"
 else
     rm -f /tmp/clipstash_cli
+    echo "  ℹ CLI skipped (no write access to /usr/local/bin)"
+    echo "    To enable: sudo cp ~/.clipstash/clipstash /usr/local/bin/"
 fi
 
 echo ""
