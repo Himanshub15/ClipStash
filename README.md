@@ -39,6 +39,19 @@ Click the **📋** icon in your menu bar to see your last 5 copied items. Click 
 
 ---
 
+## CLI Commands
+
+After install, you get a `clipstash` command in your terminal:
+
+```bash
+clipstash start     # Start / reopen ClipStash
+clipstash stop      # Stop ClipStash
+clipstash restart   # Restart ClipStash
+clipstash status    # Check if it's running
+```
+
+---
+
 ## Uninstall
 
 ```bash
