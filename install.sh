@@ -6,6 +6,7 @@ set -e
 REPO="Himanshub15/ClipStash"
 BRANCH="main"
 INSTALL_DIR="$HOME/.clipstash"
+VENV_DIR="$INSTALL_DIR/venv"
 PLIST_PATH="$HOME/Library/LaunchAgents/com.clipstash.plist"
 RAW_BASE="https://raw.githubusercontent.com/$REPO/$BRANCH"
 
@@ -29,36 +30,30 @@ if [ -z "$PY" ]; then
 fi
 echo "  ✓ Found Python: $PY"
 
-# --- Install rumps if needed ---
-if ! "$PY" -c "import rumps" 2>/dev/null; then
-    echo "  → Installing dependencies..."
-    "$PY" -m pip install rumps 2>&1 | tail -3 || \
-    "$PY" -m pip install --user rumps 2>&1 | tail -3 || \
-    "$PY" -m pip install --break-system-packages rumps 2>&1 | tail -3 || {
-        echo "  ✗ Failed to install rumps. Try manually: pip3 install rumps"
-        exit 1
-    }
-fi
-if ! "$PY" -c "import rumps" 2>/dev/null; then
-    echo "  ✗ rumps not found after install. Try: pip3 install rumps"
-    exit 1
-fi
-echo "  ✓ Dependencies ready"
-
 # --- Stop old instance if running ---
 pkill -f "clipstash/clipboard_manager.py" 2>/dev/null || true
 launchctl unload "$PLIST_PATH" 2>/dev/null || true
 
-# --- Download latest files ---
+# --- Download files ---
 echo "  → Downloading ClipStash..."
 mkdir -p "$INSTALL_DIR"
 curl -fsSL "$RAW_BASE/clipboard_manager.py" -o "$INSTALL_DIR/clipboard_manager.py"
 curl -fsSL "$RAW_BASE/update.sh" -o "$INSTALL_DIR/update.sh"
 chmod +x "$INSTALL_DIR/update.sh"
-
-# Store version info
 curl -fsSL "$RAW_BASE/VERSION" -o "$INSTALL_DIR/VERSION" 2>/dev/null || echo "1.0.0" > "$INSTALL_DIR/VERSION"
 
+# --- Create venv and install dependencies ---
+echo "  → Setting up environment..."
+"$PY" -m venv "$VENV_DIR" 2>/dev/null || {
+    echo "  ✗ Failed to create virtual environment."
+    echo "    Try: pip3 install virtualenv"
+    exit 1
+}
+"$VENV_DIR/bin/pip" install --upgrade pip >/dev/null 2>&1 || true
+"$VENV_DIR/bin/pip" install rumps 2>&1 | tail -1
+echo "  ✓ Dependencies ready"
+
+VENV_PY="$VENV_DIR/bin/python3"
 echo "  ✓ Installed to $INSTALL_DIR"
 
 # --- Create LaunchAgent ---
@@ -72,7 +67,7 @@ cat > "$PLIST_PATH" << EOF
     <string>com.clipstash</string>
     <key>ProgramArguments</key>
     <array>
-        <string>$PY</string>
+        <string>$VENV_PY</string>
         <string>$INSTALL_DIR/clipboard_manager.py</string>
     </array>
     <key>RunAtLoad</key>
@@ -120,15 +115,16 @@ echo "  ✓ Auto-updates enabled (checks daily)"
 CLI_PATH="/usr/local/bin/clipstash"
 cat > /tmp/clipstash_cli << CLIP
 #!/bin/bash
+PLIST="$PLIST_PATH"
 case "\${1:-start}" in
     start)
         pkill -f "clipstash/clipboard_manager.py" 2>/dev/null || true
-        launchctl unload "$PLIST_PATH" 2>/dev/null || true
-        launchctl load "$PLIST_PATH"
+        launchctl unload "\$PLIST" 2>/dev/null || true
+        launchctl load "\$PLIST"
         echo "ClipStash started — look for 📋 in your menu bar."
         ;;
     stop)
-        launchctl unload "$PLIST_PATH" 2>/dev/null || true
+        launchctl unload "\$PLIST" 2>/dev/null || true
         pkill -f "clipstash/clipboard_manager.py" 2>/dev/null || true
         echo "ClipStash stopped."
         ;;
