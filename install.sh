@@ -32,7 +32,16 @@ echo "  ✓ Found Python: $PY"
 # --- Install rumps if needed ---
 if ! "$PY" -c "import rumps" 2>/dev/null; then
     echo "  → Installing dependencies..."
-    "$PY" -m pip install --user rumps >/dev/null 2>&1
+    "$PY" -m pip install rumps 2>&1 | tail -3 || \
+    "$PY" -m pip install --user rumps 2>&1 | tail -3 || \
+    "$PY" -m pip install --break-system-packages rumps 2>&1 | tail -3 || {
+        echo "  ✗ Failed to install rumps. Try manually: pip3 install rumps"
+        exit 1
+    }
+fi
+if ! "$PY" -c "import rumps" 2>/dev/null; then
+    echo "  ✗ rumps not found after install. Try: pip3 install rumps"
+    exit 1
 fi
 echo "  ✓ Dependencies ready"
 
