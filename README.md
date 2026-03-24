@@ -48,6 +48,8 @@ clipstash start     # Start / reopen ClipStash
 clipstash stop      # Stop ClipStash
 clipstash restart   # Restart ClipStash
 clipstash status    # Check if it's running
+clipstash update    # Check for updates now
+clipstash version   # Show current version
 ```
 
 ---
@@ -100,6 +102,24 @@ python3 clipboard_manager.py
 # Test the install flow locally
 bash install.sh
 ```
+
+---
+
+## Changelog
+
+### v1.1.0 — 2026-03-24
+
+- Hide Python icon from Dock — menu bar only
+- Add `clipstash update` and `clipstash version` commands
+- Virtual environment install — works on any Python setup
+- Daily auto-update checks in the background
+
+### v1.0.0 — 2026-03-24
+
+- Initial release
+- Auto-capture clipboard, 5 recent items, one-click re-copy
+- Persistent history, LaunchAgent auto-start
+- One-command install via curl
 
 ---
 

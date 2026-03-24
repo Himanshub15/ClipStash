@@ -588,9 +588,17 @@
                         <code style="flex:1; padding:0.6rem 1rem; font-size:0.82rem; color:var(--fg);">clipstash restart</code>
                         <span style="padding:0.6rem 1rem; font-size:0.82rem; color:var(--muted);">Restart</span>
                     </div>
-                    <div class="cmd-line">
+                    <div class="cmd-line" style="margin-bottom: 0.5rem;">
                         <code style="flex:1; padding:0.6rem 1rem; font-size:0.82rem; color:var(--fg);">clipstash status</code>
                         <span style="padding:0.6rem 1rem; font-size:0.82rem; color:var(--muted);">Check if running</span>
+                    </div>
+                    <div class="cmd-line" style="margin-bottom: 0.5rem;">
+                        <code style="flex:1; padding:0.6rem 1rem; font-size:0.82rem; color:var(--fg);">clipstash update</code>
+                        <span style="padding:0.6rem 1rem; font-size:0.82rem; color:var(--muted);">Check for updates now</span>
+                    </div>
+                    <div class="cmd-line">
+                        <code style="flex:1; padding:0.6rem 1rem; font-size:0.82rem; color:var(--fg);">clipstash version</code>
+                        <span style="padding:0.6rem 1rem; font-size:0.82rem; color:var(--muted);">Show current version</span>
                     </div>
                 </div>
             </div>
@@ -623,6 +631,40 @@
                     </div>
                     <p class="reqs">Removes all files, LaunchAgent, and history.</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Changelog -->
+    <section class="how-it-works fade-in">
+        <div class="container">
+            <p class="section-title">Changelog</p>
+            <h2 class="section-heading">What's new.</h2>
+
+            <div style="margin-bottom: 2rem;">
+                <div style="display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.5rem;">
+                    <span style="font-family: 'Geist Mono', monospace; font-size: 0.85rem; font-weight: 600; color: var(--accent);">v1.1.0</span>
+                    <span style="font-size: 0.8rem; color: var(--muted);">March 24, 2026</span>
+                </div>
+                <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.4rem;">
+                    <li style="font-size: 0.9rem; color: var(--muted); padding-left: 1rem; position: relative;"><span style="position: absolute; left: 0; color: var(--accent);">+</span> Hide Python icon from Dock — menu bar only</li>
+                    <li style="font-size: 0.9rem; color: var(--muted); padding-left: 1rem; position: relative;"><span style="position: absolute; left: 0; color: var(--accent);">+</span> CLI commands: <code style="font-size: 0.8rem; background: var(--code-bg); padding: 0.1rem 0.35rem; border-radius: 3px; color: var(--accent);">clipstash update</code> and <code style="font-size: 0.8rem; background: var(--code-bg); padding: 0.1rem 0.35rem; border-radius: 3px; color: var(--accent);">clipstash version</code></li>
+                    <li style="font-size: 0.9rem; color: var(--muted); padding-left: 1rem; position: relative;"><span style="position: absolute; left: 0; color: var(--accent);">+</span> Virtual environment install — works on any Python setup</li>
+                    <li style="font-size: 0.9rem; color: var(--muted); padding-left: 1rem; position: relative;"><span style="position: absolute; left: 0; color: var(--accent);">+</span> Daily auto-update checks in the background</li>
+                </ul>
+            </div>
+
+            <div>
+                <div style="display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.5rem;">
+                    <span style="font-family: 'Geist Mono', monospace; font-size: 0.85rem; font-weight: 600; color: var(--fg);">v1.0.0</span>
+                    <span style="font-size: 0.8rem; color: var(--muted);">March 24, 2026</span>
+                </div>
+                <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.4rem;">
+                    <li style="font-size: 0.9rem; color: var(--muted); padding-left: 1rem; position: relative;"><span style="position: absolute; left: 0; color: var(--accent);">+</span> Initial release</li>
+                    <li style="font-size: 0.9rem; color: var(--muted); padding-left: 1rem; position: relative;"><span style="position: absolute; left: 0; color: var(--accent);">+</span> Auto-capture clipboard, 5 recent items, one-click re-copy</li>
+                    <li style="font-size: 0.9rem; color: var(--muted); padding-left: 1rem; position: relative;"><span style="position: absolute; left: 0; color: var(--accent);">+</span> Persistent history, LaunchAgent auto-start</li>
+                    <li style="font-size: 0.9rem; color: var(--muted); padding-left: 1rem; position: relative;"><span style="position: absolute; left: 0; color: var(--accent);">+</span> One-command install via curl</li>
+                </ul>
             </div>
         </div>
     </section>

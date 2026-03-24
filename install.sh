@@ -134,13 +134,20 @@ case "\${1:-start}" in
         ;;
     status)
         if pgrep -f "clipstash/clipboard_manager.py" >/dev/null 2>&1; then
-            echo "ClipStash is running."
+            echo "ClipStash is running. (v\$(cat ~/.clipstash/VERSION 2>/dev/null || echo '?'))"
         else
             echo "ClipStash is not running. Run 'clipstash start' to start."
         fi
         ;;
+    update)
+        echo "Checking for updates..."
+        bash ~/.clipstash/update.sh 2>&1 || echo "Already on the latest version."
+        ;;
+    version)
+        echo "ClipStash v\$(cat ~/.clipstash/VERSION 2>/dev/null || echo '?')"
+        ;;
     *)
-        echo "Usage: clipstash [start|stop|restart|status]"
+        echo "Usage: clipstash [start|stop|restart|status|update|version]"
         ;;
 esac
 CLIP
