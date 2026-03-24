@@ -5,12 +5,18 @@ Automatically captures clipboard history and keeps the 5 most recent items.
 Click any item to copy it back to your clipboard.
 """
 
+import AppKit
 import rumps
 import subprocess
 import threading
 import time
 import os
 import json
+
+# Hide Python icon from Dock — run as accessory (menu bar only)
+AppKit.NSApplication.sharedApplication().setActivationPolicy_(
+    AppKit.NSApplicationActivationPolicyAccessory
+)
 
 # --- Config ---
 MAX_ITEMS = 5
