@@ -69,7 +69,7 @@ cat > "$PLIST_PATH" << EOF
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
-    <true/>
+    <false/>
     <key>StandardErrorPath</key>
     <string>$INSTALL_DIR/error.log</string>
 </dict>
@@ -107,6 +107,48 @@ EOF
 launchctl load "$UPDATE_PLIST" 2>/dev/null || true
 echo "  ✓ Auto-updates enabled (checks daily)"
 
+# --- Create 'clipstash' CLI command ---
+CLI_PATH="/usr/local/bin/clipstash"
+cat > /tmp/clipstash_cli << CLIP
+#!/bin/bash
+case "\${1:-start}" in
+    start)
+        pkill -f "clipstash/clipboard_manager.py" 2>/dev/null || true
+        launchctl unload "$PLIST_PATH" 2>/dev/null || true
+        launchctl load "$PLIST_PATH"
+        echo "ClipStash started — look for 📋 in your menu bar."
+        ;;
+    stop)
+        launchctl unload "$PLIST_PATH" 2>/dev/null || true
+        pkill -f "clipstash/clipboard_manager.py" 2>/dev/null || true
+        echo "ClipStash stopped."
+        ;;
+    restart)
+        "\$0" stop
+        "\$0" start
+        ;;
+    status)
+        if pgrep -f "clipstash/clipboard_manager.py" >/dev/null 2>&1; then
+            echo "ClipStash is running."
+        else
+            echo "ClipStash is not running. Run 'clipstash start' to start."
+        fi
+        ;;
+    *)
+        echo "Usage: clipstash [start|stop|restart|status]"
+        ;;
+esac
+CLIP
+
+if [ -d "/usr/local/bin" ]; then
+    mv /tmp/clipstash_cli "$CLI_PATH" 2>/dev/null && chmod +x "$CLI_PATH" 2>/dev/null || {
+        sudo mv /tmp/clipstash_cli "$CLI_PATH" && sudo chmod +x "$CLI_PATH"
+    }
+    echo "  ✓ CLI ready — type 'clipstash' to manage"
+else
+    rm -f /tmp/clipstash_cli
+fi
+
 echo ""
 echo "  ┌──────────────────────────────────────────┐"
 echo "  │  ClipStash is ready!                     │"
@@ -115,6 +157,10 @@ echo "  │  📋 Copy anything — it's auto-captured   │"
 echo "  │  Click the 📋 icon to see your history   │"
 echo "  │  Starts automatically on login           │"
 echo "  │  Updates automatically in the background │"
+echo "  │                                          │"
+echo "  │  Reopen anytime:  clipstash start        │"
+echo "  │  Stop:            clipstash stop         │"
+echo "  │  Check status:    clipstash status       │"
 echo "  └──────────────────────────────────────────┘"
 echo ""
 echo "  Uninstall: curl -fsSL $RAW_BASE/uninstall.sh | bash"

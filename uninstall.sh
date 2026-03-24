@@ -11,6 +11,7 @@ rm -f ~/Library/LaunchAgents/com.clipstash.plist
 rm -f ~/Library/LaunchAgents/com.clipstash.updater.plist
 pkill -f "clipstash/clipboard_manager.py" 2>/dev/null || true
 rm -rf ~/.clipstash
+rm -f /usr/local/bin/clipstash 2>/dev/null || sudo rm -f /usr/local/bin/clipstash 2>/dev/null || true
 
 echo ""
 echo "  ✓ ClipStash removed."
