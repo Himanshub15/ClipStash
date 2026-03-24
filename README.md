@@ -1,5 +1,7 @@
 # ClipStash
 
+**[Website](https://himanshub15.github.io/ClipStash)** | **[Blog Post](https://himanshub15.github.io/posts/building-clipstash.html)**
+
 **Lightweight clipboard manager for macOS.** Lives in your menu bar, remembers what you copy.
 
 ![macOS 12+](https://img.shields.io/badge/macOS-12%2B-blue)
